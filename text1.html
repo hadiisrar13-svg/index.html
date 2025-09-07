@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Hadi Israr | Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header Section -->
+  <header>
+    <div class="container">
+      <h1 class="logo">Hadi Israr</h1>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <!-- Dark Mode Toggle -->
+      <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero fade-in">
+    <div class="hero-text">
+      <h2>Hello, I'm <span>Hadi Israr</span></h2>
+      <p>A Passionate Web Developer & Network Administrator</p>
+      <a href="#contact" class="btn">Hire Me</a>
+      <a href="Hadi-Israr-CV.pdf" class="btn cv-btn" download>Download CV</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="section slide-in">
+    <div class="container about-container">
+      <div class="about-img">
+        <img src="profile.jpg" alt="Hadi Israr">
+      </div>
+      <div class="about-text">
+        <h2>About Me</h2>
+        <p>
+          I am Hadi Israr, a creative and detail-oriented web developer and network administrator. 
+          With a passion for modern technologies, I focus on creating professional, responsive, 
+          and user-friendly websites that meet business needs. My expertise extends from 
+          front-end development to system networking and security.
+        </p>
+        <a href="Hadi-Israr-CV.pdf" class="btn cv-btn" download>Download My CV</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="section fade-in">
+    <div class="container">
+      <h2>My Skills</h2>
+      <ul class="skills-list">
+        <li>HTML5 & CSS3</li>
+        <li>JavaScript (Basic)</li>
+        <li>Responsive Web Design</li>
+        <li>Networking & Security</li>
+        <li>Database Management</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section id="projects" class="section slide-in">
+    <div class="container">
+      <h2>Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card fade-in">
+          <h3>Portfolio Website</h3>
+          <p>A personal portfolio showcasing my skills and projects.</p>
+        </div>
+        <div class="project-card fade-in">
+          <h3>Business Website</h3>
+          <p>A responsive business website for small enterprises.</p>
+        </div>
+        <div class="project-card fade-in">
+          <h3>Network Setup</h3>
+          <p>Configured and managed secure LAN/WAN networks for organizations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section slide-in">
+    <div class="container">
+      <h2>Contact Me</h2>
+      <p>If you’d like to collaborate or hire me, feel free to reach out!</p>
+      <ul>
+        <li>Email: <a href="mailto:hadiisrar@example.com">hadiisrar@example.com</a></li>
+        <li>Phone: +92 300 0000000</li>
+        <li>Location: Pakistan</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="fade-in">
+    <p>© 2025 Hadi Israr | All Rights Reserved</p>
+  </footer>
+
+  <!-- Dark Mode + Scroll Animation Script -->
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+      let btn = document.querySelector(".dark-toggle");
+      if (document.body.classList.contains("dark-mode")) {
+        btn.textContent = "☀️";
+      } else {
+        btn.textContent = "🌙";
+      }
+    }
+
+    // Scroll animations
+    const faders = document.querySelectorAll(".fade-in");
+    const sliders = document.querySelectorAll(".slide-in");
+
+    const appearOptions = {
+      threshold: 0.2,
+      rootMargin: "0px 0px -50px 0px"
+    };
+
+    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("appear");
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+
+    faders.forEach(fader => appearOnScroll.observe(fader));
+    sliders.forEach(slider => appearOnScroll.observe(slider));
+  </script>
+</body>
+</html>
+
