@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Hadi Israr — Network Dashboard Portfolio</title>
+
+<!-- Use a modern web font -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg1: #071021;    /* deep navy */
+    --bg2: #03263a;    /* darker cyan */
+    --glass: rgba(255,255,255,0.04);
+    --accent-start: #00d0ff;
+    --accent-mid: #6a00ff;
+    --accent-end: #00ffa6;
+    --muted: #a9c7d9;
+    --card-radius: 14px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:'Poppins',system-ui,Arial,sans-serif;
+    background: linear-gradient(135deg,var(--bg1),var(--bg2));
+    color: #e8f1f8;
+    -webkit-font-smoothing:antialiased;
+    overflow-y: auto;
+  }
+
+  /* -------- page layout -------- */
+  .container{max-width:1100px;margin:28px auto;padding:20px;}
+  header{display:flex;justify-content:space-between;align-items:center;gap:16px; margin-bottom:18px;}
+  .brand {display:flex;gap:14px;align-items:center;}
+  .logo{
+    width:64px;height:64px;border-radius:12px;
+    background:linear-gradient(135deg,var(--accent-mid),var(--accent-start));
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#021026;
+    box-shadow: 0 8px 30px rgba(0,208,255,0.08), inset 0 1px 0 rgba(255,255,255,0.04);
+    font-size:20px;
+  }
+  h1{font-size:1.25rem; margin:0; letter-spacing:0.6px;}
+  .subtitle{color:var(--muted);font-size:0.92rem}
+
+  nav{display:flex;gap:10px;align-items:center}
+  nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px;font-weight:600;}
+  nav a:hover{color:#fff;background:rgba(255,255,255,0.03);}
+
+  /* animated border wrapper */
+  .glow-border{
+    position:relative;
+    padding:12px;
+    border-radius:calc(var(--card-radius) + 6px);
+    margin-bottom:18px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    overflow:visible;
+  }
+  .glow-border::before{
+    content:"";
+    position:absolute; inset:-2px; z-index:-1;
+    border-radius:calc(var(--card-radius) + 6px);
+    background: linear-gradient(90deg, var(--accent-start), var(--accent-mid), var(--accent-end));
+    filter: blur(10px);
+    opacity:0.55;
+    background-size:300% 300%;
+    animation: flow 6s linear infinite;
+  }
+  @keyframes flow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+
+  /* layout grid */
+  .grid{
+    display:grid;
+    grid-template-columns: 1fr 360px;
+    gap:20px;
+  }
+  @media (max-width:980px){ .grid{grid-template-columns:1fr} }
+
+  /* glass card */
+  .card{
+    background: var(--glass);
+    border-radius: var(--card-radius);
+    padding:18px;
+    border: 1px solid rgba(255,255,255,0.03);
+    backdrop-filter: blur(8px) saturate(120%);
+    box-shadow: 0 8px 30px rgba(3,38,58,0.45);
+    transition: transform .28s ease, box-shadow .28s ease;
+  }
+  .card:hover{ transform: translateY(-8px); box-shadow: 0 18px 45px rgba(0,160,255,0.12); }
+
+  /* hero */
+  .hero{display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .hero-left{max-width:64%}
+  .hero h2{font-size:1.6rem;margin:0 0 6px}
+  .tag{display:inline-block;padding:6px 10px;border-radius:999px;background:linear-gradient(90deg, rgba(0,208,255,0.12), rgba(106,0,255,0.08));color:var(--accent-start);font-weight:700;margin-top:8px}
+
+  /* small summary */
+  .summary{color:var(--muted);margin-top:10px;line-height:1.5;font-size:0.96rem}
+
+  /* left column sections */
+  .section {margin-bottom:18px}
+  .section-title{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .section-title h3{margin:0;font-size:1.05rem;color:var(--accent-start)}
+  .section-title p{margin:0;color:var(--muted);font-size:0.9rem}
+
+  /* skills chips */
+  .skills{display:flex;flex-wrap:wrap;gap:10px}
+  .skill{
+    padding:8px 12px;border-radius:10px;font-weight:600;font-size:0.9rem;
+    background:linear-gradient(135deg, rgba(0,208,255,0.06), rgba(106,0,255,0.04));
+    color: #eaffff;border:1px solid rgba(255,255,255,0.03);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .skill:hover{transform:translateY(-6px); box-shadow:0 12px 30px rgba(0,208,255,0.06)}
+
+  /* projects */
+  .projects{display:grid;gap:12px}
+  .project{
+    padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+    border:1px solid rgba(255,255,255,0.02); transition: transform .22s, box-shadow .22s;
+  }
+  .project:hover{transform:scale(1.02);box-shadow:0 18px 40px rgba(106,0,255,0.06)}
+  .project h4{margin:0 0 6px;color:var(--accent-mid)}
+
+  /* timeline */
+  .timeline{position:relative;padding-left:18px}
+  .timeline::before{
+    content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:linear-gradient(180deg,var(--accent-start),var(--accent-mid));
+    opacity:0.6;border-radius:2px;
+  }
+  .t-item{position:relative;margin-bottom:18px;padding-left:18px}
+  .t-dot{position:absolute;left:-4px;top:6px;width:12px;height:12px;border-radius:50%;
+    background:var(--accent-end); box-shadow:0 6px 18px rgba(0,255,166,0.12)}
+  .t-item .time{color:var(--muted);font-size:0.86rem;margin-bottom:6px}
+  .t-item .role{font-weight:700;color:var(--accent-start)}
+
+  /* right column */
+  .profile-card{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+  .avatar{
+    width:120px;height:120px;border-radius:18px;
+    background: linear-gradient(135deg,var(--accent-mid),var(--accent-start));
+    display:flex;align-items:center;justify-content:center;font-size:28px;color:#021026;font-weight:800;
+    box-shadow:0 16px 40px rgba(0,160,255,0.08)
+  }
+  .contact{color:var(--muted);font-size:0.95rem}
+  .cta{
+    display:inline-block;margin-top:8px;padding:10px 16px;border-radius:12px;font-weight:700;
+    background:linear-gradient(90deg,var(--accent-start),var(--accent-mid));color:#021026;text-decoration:none;
+    box-shadow:0 10px 30px rgba(0,160,255,0.09);
+  }
+  .cta-outline{
+    display:inline-block;margin-top:6px;padding:8px 12px;border-radius:10px;font-weight:700;
+    background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04);text-decoration:none;
+  }
+
+  /* topology hologram */
+  .topology{padding:10px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.002));border:1px solid rgba(255,255,255,0.02)}
+  svg.holo{width:100%;height:220px;display:block}
+  .node { fill:rgba(255,255,255,0.03); stroke: url(#nodeGrad); stroke-width:2; filter: drop-shadow(0 8px 20px rgba(0,208,255,0.09)); }
+  .link { stroke: url(#linkGrad); stroke-width:2.5; stroke-linecap:round; stroke-dasharray:8 6; animation: flowDash 3s linear infinite; opacity:0.95 }
+  @keyframes flowDash { to { stroke-dashoffset: 40 } }
+  .n-label{fill:#dff7ff;font-size:12px;text-anchor:middle}
+
+  /* small utility */
+  .muted{color:var(--muted)}
+  footer{color:var(--muted);text-align:center;margin:26px 0 60px}
+</style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header>
+      <div class="brand">
+        <div class="logo">HI</div>
+        <div>
+          <h1>Hadi Israr</h1>
+          <div class="subtitle">Network Administrator • Infrastructure • Security</div>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#cv">CV</a>
+      </nav>
+    </header>
+
+    <!-- animated glow border hero -->
+    <div class="glow-border">
+      <div class="card hero">
+        <div class="hero-left">
+          <h2>Hello — I build secure, reliable networks</h2>
+          <div class="tag">LAN • VLAN • Routing • Firewall • Server</div>
+          <p class="summary">I design, deploy, and maintain scalable network infrastructures. Skilled with routing protocols, VLAN segmentation, firewall hardening, and Linux/Windows servers. I convert complex network requirements into solid designs that run reliably.</p>
+        </div>
+
+        <div style="text-align:right">
+          <div style="font-size:0.9rem;color:var(--muted)">Availability</div>
+          <div style="font-weight:800;font-size:1.05rem;color:var(--accent-start)">Open for internships & freelance</div>
+          <a class="cta" href="#cv">Download CV</a>
+          <div style="margin-top:10px">
+            <a class="cta-outline" href="mailto:hadiisrar@example.com">Email</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- two-column grid -->
+    <div class="grid">
+
+      <!-- LEFT column -->
+      <div>
+
+        <section id="about" class="section card">
+          <div class="section-title">
+            <h3>About</h3>
+            <p class="muted">Quick snapshot</p>
+          </div>
+          <p class="muted">Network engineer with hands-on experience building labs, setting up VLANs, configuring OSPF/RIP basics and implementing firewall policies. Comfortable using Packet Tracer, GNS3 and Wireshark to validate designs.</p>
+        </section>
+
+        <section id="skills" class="section">
+          <div class="section-title">
+            <h3>Skills</h3>
+            <p class="muted">Core competencies</p>
+          </div>
+          <div class="card skills" role="list">
+            <div class="skill">Routing (OSPF)</div>
+            <div class="skill">VLAN Design</div>
+            <div class="skill">TCP/IP & Subnetting</div>
+            <div class="skill">Firewalls & VPNs</div>
+            <div class="skill">Linux Servers</div>
+            <div class="skill">Packet Analysis</div>
+          </div>
+        </section>
+
+        <section id="projects" class="section">
+          <div class="section-title">
+            <h3>Projects</h3>
+            <p class="muted">Selected work</p>
+          </div>
+
+          <div class="projects">
+            <div class="project card">
+              <h4>VLAN Segmentation & Lab</h4>
+              <div class="muted">Design & testing</div>
+              <p class="muted">Created multi-VLAN lab to simulate staff/guest/server separation and inter-VLAN routing using Packet Tracer.</p>
+            </div>
+
+            <div class="project card">
+              <h4>Secure Remote Access</h4>
+              <div class="muted">VPN & firewall</div>
+              <p class="muted">Configured site-to-site VPN and hardened firewall rules to permit secure remote connectivity with least privilege.</p>
+            </div>
+
+            <div class="project card">
+              <h4>Server Deployment</h4>
+              <div class="muted">Linux / Backup</div>
+              <p class="muted">Deployed a Linux file server, implemented scheduled backups and basic monitoring scripts.</p>
+            </div>
+          </div>
+
+        </section>
+
+      </div>
+
+      <!-- RIGHT column -->
+      <aside class="right">
+
+        <div class="card profile-card">
+          <div class="avatar">HI</div>
+          <div style="font-weight:700">Hadi Israr</div>
+          <div class="contact muted">hadiisrar@example.com<br>+92 300 0000000</div>
+          <a class="cta" href="Hadi_Israr_CV.pdf" download>Download CV</a>
+          <a class="cta-outline" href="#" style="margin-top:8px">LinkedIn</a>
+        </div>
+
+        <div class="card">
+          <h4 style="margin:0 0 8px 0;color:var(--accent-mid)">Experience</h4>
+          <div class="timeline">
+            <div class="t-item">
+              <div class="t-dot"></div>
+              <div class="time">Jan 2024 — Apr 2024</div>
+              <div class="role t-role"><strong>Intern — Cenit IT</strong></div>
+              <div class="muted">VLAN & DHCP labs, packet captures, firewall rules.</div>
+            </div>
+
+            <div class="t-item">
+              <div class="t-dot"></div>
+              <div class="time">2023 — Present</div>
+              <div class="role t-role"><strong>Freelance</strong></div>
+              <div class="muted">Small office network designs & server deployments.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h4 style="margin:0 0 8px 0;color:var(--accent-mid)">Network Topology</h4>
+          <div class="topology">
+            <svg class="holo" viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="network topology">
+              <defs>
+                <linearGradient id="linkGrad" x1="0" x2="1">
+                  <stop offset="0" stop-color="#00d0ff" />
+                  <stop offset="1" stop-color="#6a00ff" />
+                </linearGradient>
+                <linearGradient id="nodeGrad" x1="0" x2="1">
+                  <stop offset="0" stop-color="#00ffa6"/>
+                  <stop offset="1" stop-color="#00d0ff"/>
+                </linearGradient>
+                <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="6" result="b"/>
+                  <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+
+              <!-- Links -->
+              <g class="links" stroke-linecap="round" fill="none">
+                <path class="link" d="M120 140 L260 140" />
+                <path class="link" d="M340 140 L480 140" />
+                <path class="link" d="M500 140 L620 90" />
+                <path class="link" d="M500 140 L620 190" />
+              </g>
+
+              <!-- Router -->
+              <g transform="translate(120,140)">
+                <rect x="-36" y="-24" width="72" height="48" rx="10" class="node" filter="url(#soft)"/>
+                <text class="n-label" y="6">Router</text>
+              </g>
+
+              <!-- Switch -->
+              <g transform="translate(320,140)">
+                <rect x="-44" y="-18" width="88" height="36" rx="8" class="node" filter="url(#soft)"/>
+                <text class="n-label" y="6">Switch</text>
+              </g>
+
+              <!-- Firewall -->
+              <g transform="translate(480,140)">
+                <rect x="-36" y="-22" width="72" height="44" rx="10" style="fill:rgba(255,255,255,0.03);stroke:#ff8a8a;stroke-width:2" />
+                <text class="n-label" y="6">Firewall</text>
+              </g>
+
+              <!-- Server -->
+              <g transform="translate(620,90)">
+                <rect x="-28" y="-28" width="56" height="56" rx="8" class="node" filter="url(#soft)"/>
+                <text class="n-label" y="36">Server</text>
+              </g>
+
+              <!-- Client -->
+              <g transform="translate(620,190)">
+                <rect x="-28" y="-16" width="56" height="32" rx="8" class="node" filter="url(#soft)"/>
+                <text class="n-label" y="26">Client</text>
+              </g>
+
+            </svg>
+          </div>
+        </div>
+
+      </aside>
+
+    </div> <!-- end grid -->
+
+    <footer>© 2025 • Hadi Israr — Network Administrator</footer>
+  </div>
+
+</body>
+</html>
